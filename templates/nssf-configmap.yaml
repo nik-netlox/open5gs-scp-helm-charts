@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-nssf-config
+  labels:
+    epc-mode: nssf
+data:
+  nssf.yaml: |
+    logger:
+        file: /var/log/open5gs/nssf.log   
+
+    nssf:
+      sbi:     
+      - addr: 0.0.0.0
+        advertise: {{ .Release.Name }}-nssf
+        #advertise: 123.123.123.5
+      nsi:
+        #- addr: {{ .Release.Name }}-nrf
+      - addr: {{ .Values.nrf.svc }}
+        port: 80
+        s_nssai:
+          sst: {{ .Values.nssf.sst }}
+          sd: {{ .Values.nssf.sd }}
+    nrf:
+     sbi:
+      name: {{ .Values.nrf.svc }}
+        #name: {{ .Release.Name }}-nrf

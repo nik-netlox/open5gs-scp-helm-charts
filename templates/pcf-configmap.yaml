@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-pcf-config
+  labels:
+    epc-mode: pcf
+data:
+  pcf.yaml: |
+    logger:
+        file: /var/log/open5gs/pcf.log
+    db_uri: mongodb://{{ .Values.mongodb.svc }}/open5gs
+    pcf:
+      sbi:     
+      - addr: 0.0.0.0
+        #advertise: {{ .Values.pcf.svc }}
+        advertise: {{ .Release.Name }}-pcf
+    nrf:
+     sbi:
+      name: {{ .Values.nrf.svc }}
+        #name: {{ .Release.Name }}-nrf

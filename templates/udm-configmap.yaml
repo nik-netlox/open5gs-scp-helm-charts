@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-udm-config
+  labels:
+    epc-mode: udm
+data:
+  udm.yaml: |
+    logger:
+        file: /var/log/open5gs/udm.log
+
+    udm:
+      sbi:   
+      - addr: 0.0.0.0
+        #advertise: {{ .Values.udm.svc }}
+        advertise: {{ .Release.Name }}-udm
+    nrf:
+     sbi:
+      name: {{ .Values.nrf.svc }}
+        #name: {{ .Release.Name }}-nrf
